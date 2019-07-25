@@ -1,4 +1,4 @@
-/*  Now magic numbers are not anymore magic.
+/*  Now magic numbers are not magic anymore.
     They have been moved to a file where their meanings
     are shown explicitly.
 */
