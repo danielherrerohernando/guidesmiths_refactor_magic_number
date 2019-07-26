@@ -12,31 +12,31 @@ const fs = require("fs");
 
 // Functions to calculate data based on element´s info. Many numbers without obvious meaning.
 
-const addLackOfMass = element => {
+const addLackOfMassInKg = element => {
   return {
     ...element,
-    lackOfMass:(element.z * 1.0076 + (element.n - element.z) * 1.0089 - element.weight) * 1.66 * Math.pow(10, -27)
+    lackOfMassInKg: (element.z * 1.0076 + (element.n - element.z) * 1.0089 - element.weight) * 1.66 * Math.pow(10, -27)
   };
 };
 
-const addBindingEnergy = element => {
+const addBindingEnergyInJul = element => {
   return {
     ...element,
-    bindingEnergy: element.lackOfMass * Math.pow(3 * Math.pow(10, 8), 2)
+    bindingEnergyInJul: element.lackOfMassInKg * Math.pow(3 * Math.pow(10, 8), 2)
   };
 };
 
 const addBindingEnergyPerNucleonInMeV = element => {
   return {
     ...element,
-    bindingEnergyPerNucleon: (element.bindingEnergy / element.n) * 6.242 * Math.pow(10, 12)
+    bindingEnergyPerNucleonInMev: (element.bindingEnergyInJul / element.n) * 6.242 * Math.pow(10, 12)
   };
 };
 
 // Input mapping
 const enrichedData = data
-  .map(addLackOfMass)
-  .map(addBindingEnergy)
+  .map(addLackOfMassInKg)
+  .map(addBindingEnergyInJul)
   .map(addBindingEnergyPerNucleonInMeV);
 
 // Writing output

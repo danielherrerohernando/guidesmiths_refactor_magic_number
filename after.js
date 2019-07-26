@@ -16,31 +16,31 @@ const {
 
 // Functions to calculate data based on element´s info and appending it to the element. Now using constants.
 
-const addLackOfMass = element => {
+const addLackOfMassInKg = element => {
   return {
     ...element,
-    lackOfMass: (element.z * PROTON_WEIGHT_UMA + (element.n - element.z) * NEUTRON_WEIGHT_UMA - element.weight) * UMA_TO_KG
+    lackOfMassInKg: (element.z * PROTON_WEIGHT_UMA + (element.n - element.z) * NEUTRON_WEIGHT_UMA - element.weight) * UMA_TO_KG
   };
 };
 
-const addBindingEnergy = element => {
+const addBindingEnergyInJul = element => {
   return {
     ...element,
-    bindingEnergy: element.lackOfMass * Math.pow(SPEED_OF_LIGHT, 2)
+    bindingEnergyInJul: element.lackOfMassInKg * Math.pow(SPEED_OF_LIGHT, 2)
   };
 };
 
 const addBindingEnergyPerNucleonInMeV = element => {
   return {
     ...element,
-    bindingEnergyPerNucleon: (element.bindingEnergy / element.n) * JULE_TO_MEV
+    bindingEnergyPerNucleonInJul: (element.bindingEnergyInJul / element.n) * JULE_TO_MEV
   };
 };
 
 // Input mapping
 const enrichedData = data
-  .map(addLackOfMass)
-  .map(addBindingEnergy)
+  .map(addLackOfMassInKg)
+  .map(addBindingEnergyInJul)
   .map(addBindingEnergyPerNucleonInMeV);
 
 // Writing output
