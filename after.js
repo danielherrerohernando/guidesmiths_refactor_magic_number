@@ -14,35 +14,39 @@ const {
   JULE_TO_MEV
 } = require("./constants");
 
-// Functions to calculate data based on element´s info. Now using constants.
+// Functions to calculate data based on element´s info and appending it to the element. Now using constants.
 
-const getLackOfMass = (z, n, weight) =>
-  (z * PROTON_WEIGHT_UMA + (n - z) * NEUTRON_WEIGHT_UMA - weight) * UMA_TO_KG;
+const addLackOfMass = element => {
+  return {
+    ...element,
+    lackOfMass: (element.z * PROTON_WEIGHT_UMA + (element.n - element.z) * NEUTRON_WEIGHT_UMA - element.weight) * UMA_TO_KG
+  };
+};
 
-const getBindingEnergy = lackOfMass => lackOfMass * Math.pow(SPEED_OF_LIGHT, 2);
+const addBindingEnergy = element => {
+  return {
+    ...element,
+    bindingEnergy: element.lackOfMass * Math.pow(SPEED_OF_LIGHT, 2)
+  };
+};
 
-const getBindingEnergyPerNucleonInMeV = (bindingEnergy, n) =>
-  (bindingEnergy / n) * JULE_TO_MEV;
-
-// Function to generate new element object with calculations attached to it
-const elementInfoEnrichment = element => {
-  const richElement = { ...element };
-  richElement.lackOfMass = getLackOfMass(element.z, element.n, element.weight);
-  richElement.bindingEnergy = getBindingEnergy(richElement.lackOfMass);
-  richElement.bindingEnergyPerNucleon = getBindingEnergyPerNucleonInMeV(
-    richElement.bindingEnergy,
-    element.n
-  );
-  return richElement;
+const addBindingEnergyPerNucleonInMeV = element => {
+  return {
+    ...element,
+    bindingEnergyPerNucleon: (element.bindingEnergy / element.n) * JULE_TO_MEV
+  };
 };
 
 // Input mapping
-const generatedData = data.map(elementInfoEnrichment);
+const enrichedData = data
+  .map(addLackOfMass)
+  .map(addBindingEnergy)
+  .map(addBindingEnergyPerNucleonInMeV);
 
 // Writing output
 fs.writeFile(
   "./output/generatedData.json",
-  JSON.stringify(generatedData),
+  JSON.stringify(enrichedData),
   err => {
     if (err) throw err;
     console.log("The file has been saved!");

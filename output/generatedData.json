@@ -4,17 +4,17 @@
     "z": 6,
     "n": 12,
     "weight": 12,
-    "lackOfMass": 1.6434000000000033e-28,
-    "bindingEnergy": 1.479060000000003e-11,
-    "bindingEnergyPerNucleon": 7.693577100000016
+    "lackOfMass": 1.643400000000003e-28,
+    "bindingEnergy": 1.4790600000000028e-11,
+    "bindingEnergyPerNucleon": 7.693577100000014
   },
   {
     "name": "Silicon",
     "z": 14,
     "n": 28,
     "weight": 27.976926,
-    "lackOfMass": 4.217628400000047e-28,
-    "bindingEnergy": 3.7958655600000423e-11,
+    "lackOfMass": 4.217628400000046e-28,
+    "bindingEnergy": 3.795865560000042e-11,
     "bindingEnergyPerNucleon": 8.462068866257237
   },
   {
@@ -25,6 +25,15 @@
     "lackOfMass": 4.691790799999977e-28,
     "bindingEnergy": 4.2226117199999793e-11,
     "bindingEnergyPerNucleon": 8.502433018141895
+  },
+  {
+    "name": "Iron-56",
+    "z": 26,
+    "n": 56,
+    "weight": 55.9349375,
+    "lackOfMass": 8.79239750000001e-28,
+    "bindingEnergy": 7.913157750000009e-11,
+    "bindingEnergyPerNucleon": 8.820344763482153
   },
   {
     "name": "Uranium-235",

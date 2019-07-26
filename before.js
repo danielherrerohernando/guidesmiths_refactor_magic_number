@@ -12,34 +12,37 @@ const fs = require("fs");
 
 // Functions to calculate data based on element´s info. Many numbers without obvious meaning.
 
-const getLackOfMass = (z, n, weight) =>
-  (z * 1.0076 + (n - z) * 1.0089 - weight) * 1.66 * Math.pow(10, -27);
+const addLackOfMass = element => {
+  return {
+    ...element,
+    lackOfMass:(element.z * 1.0076 + (element.n - element.z) * 1.0089 - element.weight) * 1.66 * Math.pow(10, -27)
+  };
+};
 
-const getBindingEnergy = lackOfMass =>
-  lackOfMass * Math.pow(3 * Math.pow(10, 8), 2);
+const addBindingEnergy = element => {
+  return {
+    ...element,
+    bindingEnergy: element.lackOfMass * Math.pow(3 * Math.pow(10, 8), 2)
+  };
+};
 
-const getBindingEnergyPerNucleonInMeV = (bindingEnergy, n) =>
-  (bindingEnergy / n) * 6.242 * Math.pow(10, 12);
-
-// Function to generate new element object with calculations attached to it
-const elementInfoEnrichment = element => {
-  const richElement = { ...element };
-  richElement.lackOfMass = getLackOfMass(element.z, element.n, element.weight);
-  richElement.bindingEnergy = getBindingEnergy(richElement.lackOfMass);
-  richElement.bindingEnergyPerNucleon = getBindingEnergyPerNucleonInMeV(
-    richElement.bindingEnergy,
-    element.n
-  );
-  return richElement;
+const addBindingEnergyPerNucleonInMeV = element => {
+  return {
+    ...element,
+    bindingEnergyPerNucleon: (element.bindingEnergy / element.n) * 6.242 * Math.pow(10, 12)
+  };
 };
 
 // Input mapping
-const generatedData = data.map(elementInfoEnrichment);
+const enrichedData = data
+  .map(addLackOfMass)
+  .map(addBindingEnergy)
+  .map(addBindingEnergyPerNucleonInMeV);
 
 // Writing output
 fs.writeFile(
   "./output/generatedData.json",
-  JSON.stringify(generatedData),
+  JSON.stringify(enrichedData),
   err => {
     if (err) throw err;
     console.log("The file has been saved!");
